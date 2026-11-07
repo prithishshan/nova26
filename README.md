@@ -1,96 +1,74 @@
 # nova26
 
-AI agents that work prior-authorization denials for a hospital's denials team, with a human supervisor on every decision.
+**AI agents that fight prior-authorization denials for hospitals, with a human supervisor on every decision.**
 
-An agent reads the payer's denial letter, the patient's chart and the payer's own published coverage policy. It finds where the
-denial's stated reason is contradicted by evidence in the chart, drafts an appeal in which every claim is cited, and, once a
-supervisor approves, phones the payer to open an expedited appeal and book a peer-to-peer. The call opens the case; the written
-appeal and the peer-to-peer (a call between the treating physician and the payer's medical director) decide it.
+> All patient, provider and claim data in this project is fictional demo data.
 
-> All patient, provider and claim data in this repo is fictional demo data.
+## The problem
 
-## The demo case
+**Denials cost hospitals a tenth of their revenue.** US hospitals lost about **$132 billion**, roughly 10% of net revenue, to final
+denials and bad debt in 2025. On top of that, they spend about **$19.7 billion a year** just on the paperwork of fighting denials.
+
+**Billing teams can't keep up, so most denials are never fought.** Somewhere between **35% and 65%** of denied claims are never
+reworked. Physicians handle about **39 prior authorizations a week**, roughly 12 hours of staff and physician time, and 43% of providers
+say they're understaffed in claims.
+
+**Yet the fight is winnable.** Only **11.5%** of Medicare Advantage prior-auth denials are ever appealed, but **81%** of the ones that
+are appealed get overturned.
+
+## What nova26 does
+
+Four steps move a denial forward:
+
+1. **Read the denial and the chart.** The agent reads the payer's denial letter, the patient's chart and the payer's own published
+   coverage policy.
+2. **Find the contradiction.** It checks the denial's stated reason against what the chart actually documents.
+3. **Draft the cited appeal.** Every sentence in the appeal points to a chart fact or a quote from the payer's policy.
+4. **Call the insurance provider.** With a supervisor's approval, it calls the payer to open an expedited appeal, get a reference number
+   and decision deadline, and book a peer-to-peer.
+
+**The goal isn't a win on the phone. It's a peer-to-peer.** Disputes like this aren't settled over the phone. A **peer-to-peer** is a call
+between the patient's own doctor and the insurer's doctor (its medical director): the treating doctor explains the case directly, and the
+insurer's doctor can reverse the denial on the spot. Only physicians can do it, so the agent books it and hands the doctor a one-page
+brief. The call opens the case; the written appeal and the peer-to-peer decide it.
+
+## The case
+
+**$4,860 per infusion, denied by Aetna. The chart proved Aetna's reason wrong.**
+
+The patient has moderate-to-severe Crohn's disease and is in an active flare. Their gastroenterologist ordered Remicade, an IV
+medication.
 
 | | |
 |---|---|
-| Payer | Aetna, policy CPB 0341 (infliximab products) |
-| Denied | Remicade (infliximab) IV, J1745, $4,860 per infusion, prior-auth ref `PA-2026-1048837` |
-| Aetna's reason | "No documented inadequate response or intolerance to conventional therapy" |
-| Chart shows | Prednisone Jan 5 – Mar 30 (flared on taper) and ~9 months of azathioprine, inadequate response (GI note, Oct 14) |
-| Agent outcome | Expedited appeal opened, reference number + deadline + fax secured, peer-to-peer booked |
+| **Aetna said** (Oct 28) | No proof that standard, cheaper treatments were tried first. |
+| **The chart shows** (Oct 14 GI note) | Steroids from January to March stopped working as they were tapered; nine months of azathioprine didn't control it. |
+| **The agent did** (Nov 7) | Drafted a cited appeal, then called Aetna: expedited appeal opened, peer-to-peer booked. |
 
-## How it works
+Aetna decides within 72 hours, on the written appeal and the peer-to-peer.
 
-1. **Case opens with three sources attached:** the denial letter, the chart (Epic-shaped FHIR data) and the governing policy, compiled into
-   an AND/OR criteria tree where every rule keeps its verbatim policy quote.
-2. **Analyze:** the engine judges each in-scope rule against the chart, maps the denial's stated reason onto the tree (and keeps it as its
-   own check, flagged "not in compiled policy", when no rule covers it), and records whether the chart contradicts it.
-3. **Draft:** the appeal letter may only cite a fixed, numbered list of chart facts and policy quotes; citations that don't resolve are removed.
-4. **Approve and call:** the supervisor approves; the voice agent calls the payer (Twilio), verifies with NPI / tax ID / member details,
-   argues the contradiction to justify expediting, and hands anything outside its brief to the supervisor (question cards and a
-   "tell the agent to say..." relay).
-5. **Outcome:** the transcript is turned into a structured outcome (what the call secured, next actions with owners).
+## How the agent stays grounded
 
-Readiness and verdicts are computed in code, not by the model.
+- **Policies become checklists a human approves.** The payer's published policy (here Aetna CPB 0341) is turned into a tree of rules,
+  86 for this policy. Each rule keeps the exact sentence it came from, and nothing reaches an agent until a person has approved the tree.
+- **Every claim is cited.** The appeal can only cite a fixed, numbered list of chart facts and policy quotes; anything that doesn't
+  check out is removed.
+- **Three sources, one contradiction.** The agent reasons over the chart, the policy and the denial letter, and only argues what the
+  chart actually shows.
+- **A human approves every call** and answers anything the agent can't.
 
-## Repo layout
+## Try the demo
 
-```
-apps/
-  server/   Fastify API: case flow, policy library, agent + call sessions, Twilio webhooks (port 8787)
-  web/      Supervisor console (Vite + React): operations, case workspace tabs, policy library (port 5173)
-  mobile/   Earlier Expo prototype (patient-side); not used by the current demo
-packages/
-  shared/   Contract: Errand, PatientCase, DenialAnalysis, PolicyTreeNode, CaseOutcome, HTTP API notes
-  engine/   Policy engine: bundled compiled policies, criteria evaluator, denial-reason mapping,
-            cited appeal writer, call-outcome extraction
-docs/       Pitch decks (.pptx) and the Aetna-rep script for rehearsing the live call
-```
+The demo runs locally: a supervisor console, an AI agent, and a real phone call where someone plays the Aetna rep.
 
-The policy trees were compiled by the policy compiler in the separate `azure_hackathon` project and are bundled here as
-`packages/engine/data/compiled-policies.json`.
+1. `npm install`, then copy `.env.example` to `.env` and fill in the OpenRouter and Twilio keys.
+2. Start a tunnel (`npm run tunnel`) and put its URL in `PUBLIC_URL`, then run `npm run server` and `npm run web`.
+3. Open http://localhost:5173/#case, click **Run agent**, then **Approve & call Aetna**.
+4. Play the rep with the script in `docs/aetna-rep-script.docx`.
 
-## Setup
+The pitch deck is in `docs/` (latest: `nova26-deck-v8.pptx`).
 
-Requirements: Node 24, npm, and [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
-for a public URL Twilio can reach.
+## Sources
 
-```bash
-npm install
-cp .env.example .env   # then fill in the values below
-```
-
-| Variable | Purpose |
-|---|---|
-| `OPENROUTER_API_KEY` | All models (evaluation, call turns, TTS) go through OpenRouter |
-| `ENGINE_MODEL` | Criteria evaluation + appeal letter (default `anthropic/claude-sonnet-5.5`) |
-| `CALL_MODEL` | Voice agent turns (default `google/gemini-3.8-flash`) |
-| `TTS_MODEL`, `TTS_VOICE` | Agent voice (default `google/gemini-3.8-flash-tts`, `Kore`) |
-| `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Outbound calls |
-| `DEMO_TO_NUMBER` | Phone the agent calls as "the payer" (on a Twilio trial it must be a verified number) |
-| `PUBLIC_URL` | HTTPS URL of the tunnel, e.g. `https://xxxx.trycloudflare.com` |
-| `CALL_MODE` | `twilio` for real calls, `sim` to type the payer's side in the console |
-| `MAX_CALLS_PER_ERRAND` | Hard cap on calls per case (default 1) |
-
-Optional: `TTS_DEADLINE_MS` (fall back to Twilio's built-in voice if TTS is slower, default 3500), `GATHER_SPEECH_MODEL`,
-`GATHER_SPEECH_TIMEOUT`, `NOVA_PORT` (override the port from the shell).
-
-## Run
-
-```bash
-npm run tunnel   # copy the trycloudflare URL into PUBLIC_URL in .env
-npm run server   # API on :8787 (restart after changing .env)
-npm run web      # console on http://localhost:5173  (open #case for the demo case)
-```
-
-In the console: open the case, click **Run agent** (about 30 s), review the appeal draft and the "Aetna's claim vs. the chart" card,
-then **Approve & call Aetna**. Play the rep using `docs/aetna-rep-script.docx`.
-
-## Notes and limits
-
-- **Twilio trial:** calls start with a "press any key" message, can only reach verified numbers, and reject some optional API parameters
-  (the server falls back to status polling). Calls are turn-based (`<Gather>`), so expect a few seconds per reply.
-- **State is in memory:** restarting the server ends any call in progress and resets the case.
-- **Peer-to-peers are physician-only:** the agent books them and prepares a brief; it does not conduct them.
-- The compiled CPB 0341 tree has no explicit "failed conventional therapy" rule for Crohn's disease, which is why the denial reason
-  shows up as a separate, flagged check.
+Kodiak Solutions (Nov 2026) · Premier survey of 516 hospitals · MGMA / Change Healthcare figures · AMA 2024 Prior Authorization
+Physician Survey · Experian Health State of Claims 2025 · KFF analysis of Medicare Advantage prior authorization, 2024.

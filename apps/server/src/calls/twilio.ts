@@ -10,7 +10,9 @@ import { registerRelayRoute } from "./relay.js";
 
 const VoiceResponse = twilio.twiml.VoiceResponse;
 const MAX_HOLD_MS = 90_000;
-const WEBHOOK_BUDGET_MS = 8_000; // Twilio times out at 15s; leave headroom for the tunnel
+// Answer every Twilio webhook fast; if the reply isn't ready, pause 1s and have Twilio check back (/twilio/wait).
+// Long-held webhooks (6s+) were being dropped by Twilio with "cannot reach your TwiML server".
+const WEBHOOK_BUDGET_MS = Number(process.env.WEBHOOK_BUDGET_MS || 2500);
 const STILL_THERE = "Sorry, are you still there?";
 const NO_ANSWER_BYE = "I'm not hearing anything, so I'll try again later. Goodbye.";
 // Gather speech model. Twilio docs: when speechModel is set, speechTimeout must be a positive integer
@@ -182,7 +184,7 @@ function gatherAttrs(s: CallSession) {
 function waitTwiml(s: CallSession, filler?: TurnOut): string {
   const vr = new VoiceResponse();
   if (filler) speak(vr, filler);
-  vr.pause({ length: 2 });
+  vr.pause({ length: 1 });
   vr.redirect({ method: "POST" }, url("/twilio/wait", s));
   return vr.toString();
 }

@@ -22,6 +22,12 @@ app.addHook("onResponse", async (req, reply) => {
   const ms = Date.now() - ((req as unknown as { t0: number }).t0 ?? Date.now());
   console.log(`[http] ${req.method} ${req.url.split("?")[0]} -> ${reply.statusCode} in ${ms}ms`);
 });
+app.addHook("onSend", async (req, _reply, payload) => {
+  if (/^\/twilio\//.test(req.url) && typeof payload === "string") {
+    console.log(`[twiml] ${req.url.split("?")[0]} <- ${payload.replace(/hints="[^"]*"/, 'hints="..."').replace(/https:\/\/[^/]+/g, "").slice(0, 400)}`);
+  }
+  return payload;
+});
 app.addHook("onError", async (req, _reply, err) => { console.error(`[http] ERROR ${req.method} ${req.url.split("?")[0]}: ${err.message}`); });
 await app.register(cors, { origin: true });
 await app.register(formbody);
