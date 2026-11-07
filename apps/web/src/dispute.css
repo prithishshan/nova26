@@ -1,0 +1,76 @@
+/* Aetna's claim vs. the chart */
+.dispute { border: 1px solid var(--border); background: var(--panel-2); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 14px; font-family: Inter, system-ui, sans-serif; }
+.dp-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.dp-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-2); }
+.dp-reason { margin: 0 0 10px; padding: 8px 10px; border-left: 2px solid var(--red); background: var(--red-bg); color: #f3b5b7; font-style: italic; font-size: 14px; }
+.dp-claims { display: flex; flex-direction: column; gap: 8px; }
+.dp-claim { display: grid; grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1.3fr); align-items: stretch; gap: 6px; }
+.dp-side { padding: 8px 10px; border-radius: 2px; border: 1px solid var(--border-soft); }
+.dp-side.says { background: var(--red-bg); border-color: rgba(231, 106, 110, 0.4); }
+.dp-side.shows { background: var(--panel); }
+.dp-side.shows.s-met { background: var(--green-bg); border-color: rgba(50, 164, 103, 0.45); }
+.dp-side.shows.s-unmet { background: var(--red-bg); }
+.dp-side.shows.s-unknown { background: var(--amber-bg); }
+.dp-k { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 4px; }
+.says .dp-k { color: var(--red); }
+.s-met .dp-k { color: var(--green); }
+.dp-v { font-size: 14px; color: var(--text); line-height: 1.45; }
+.dp-arrow { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 16px; }
+.dp-pol { margin-top: 5px; font-size: 11px; color: #8abbff; }
+.dp-q { font-family: Inter, system-ui, sans-serif; color: var(--text-2); font-style: italic; }
+.tag.dp-verify { background: var(--amber-bg); color: var(--amber); text-transform: none; letter-spacing: 0; font-family: Inter, system-ui, sans-serif; }
+.dp-verdict { margin-top: 10px; padding: 10px 12px; border-radius: 2px; }
+.dp-verdict.ok { background: var(--green-bg); border: 1px solid rgba(50, 164, 103, 0.5); }
+.dp-verdict.bad { background: var(--amber-bg); border: 1px solid rgba(236, 154, 60, 0.5); }
+.dp-vline { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+.ok .dp-vline { color: #9fe3bd; }
+.bad .dp-vline { color: var(--amber); }
+.dp-vicon { width: 26px; height: 26px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 2px; font-size: 16px; font-weight: 900; }
+.ok .dp-vicon { background: var(--green); color: #0b1a12; }
+.bad .dp-vicon { background: var(--amber); color: #111418; }
+.dp-just { margin-top: 6px; font-size: 13px; color: var(--text-2); }
+
+/* compact (right rail) */
+.dispute.compact { padding: 8px 10px; margin: 8px 0; background: var(--panel); }
+.dispute.compact .dp-claim { grid-template-columns: 1fr; gap: 4px; }
+.dispute.compact .dp-arrow { display: none; }
+.dispute.compact .dp-v { font-size: 12.5px; }
+.dispute.compact .dp-vline { font-size: 13px; }
+.dispute.compact .dp-vicon { width: 20px; height: 20px; font-size: 13px; }
+.dispute.compact .dp-just { display: none; }
+.hitl-lead { font-weight: 600; color: var(--text) !important; }
+
+/* denial-reason tag on criteria */
+.tag.disputed { background: var(--red-bg); color: var(--red); border: 1px solid rgba(231, 106, 110, 0.45); font-size: 10px; flex-shrink: 0; }
+.paper .dispute { margin-bottom: 18px; }
+
+/* v2: three sources + contradiction marker (black-on-white) */
+.dispute { background: #fff; border: 1px solid #111; }
+.dp-title { color: #111; font-size: 12px; }
+.dp-sources { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e6e8eb; }
+.dp-src { font-size: 12px; color: #555; border: 1px solid #b9bec6; padding: 3px 8px; border-radius: 2px; }
+.dp-src b { color: #111; font-weight: 700; }
+.dp-reason .dp-k { display: block; color: #555; margin-bottom: 3px; font-style: normal; }
+.dp-claim { display: block; border-top: 1px solid #e6e8eb; padding-top: 10px; }
+.dp-claim:first-child { border-top: 0; padding-top: 0; }
+.dp-rule { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 6px; font-size: 13px; }
+.dp-rule .dp-k { margin: 0; color: #555; }
+.dp-rule-label { font-weight: 600; color: #111; }
+.dp-sec { font-size: 11px; color: #555; }
+.dp-rule .dp-q { flex-basis: 100%; font-size: 12.5px; color: #555; font-style: italic; }
+.dp-compare { display: grid; grid-template-columns: minmax(0, 1fr) 92px minmax(0, 1.2fr); gap: 0; align-items: stretch; }
+.dp-from { color: #777; font-weight: 400; letter-spacing: 0; }
+.dp-neq { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #777; }
+.dp-neq-sym { font-size: 30px; line-height: 1; font-weight: 700; }
+.dp-neq-lbl { font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; margin-top: 2px; }
+.dp-neq.on { color: #c62828; }
+.dp-vline { color: #111; }
+.dispute.compact .dp-compare { grid-template-columns: 1fr; }
+.dispute.compact .dp-neq { flex-direction: row; gap: 6px; padding: 3px 0; }
+.dispute.compact .dp-neq-sym { font-size: 18px; }
+.dispute.compact .dp-sources { gap: 4px; }
+.dispute.compact .dp-src { font-size: 11px; padding: 2px 6px; }
+.dispute.compact .dp-rule { font-size: 12px; }
+.rfacts { margin-top: 5px; display: flex; flex-direction: column; gap: 3px; }
+.rfact { font-size: 14px; color: #111; display: flex; gap: 8px; }
+.rfact .src { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; color: #111; flex-shrink: 0; width: 98px; padding-top: 3px; }

@@ -1,0 +1,247 @@
+/* Black-on-white theme. Loaded LAST: redefines the tokens and neutralises tints/glows so
+   colour only appears where it carries meaning (met = green text, unmet/denied = red text). */
+:root {
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --panel-2: #ffffff;
+  --raised: #ffffff;
+  --border: #d9dce1;
+  --border-soft: #e6e8eb;
+  --text: #111111;
+  --text-2: #555555;
+  --muted: #777777;
+  --accent: #111111;
+  --accent-bg: transparent;
+  --green: #1a7f37;
+  --green-bg: transparent;
+  --amber: #111111;
+  --amber-bg: transparent;
+  --red: #c62828;
+  --red-bg: transparent;
+  --ai: #111111;
+  --ai-bg: transparent;
+  color-scheme: light;
+}
+
+/* no glow, pulse, shadow or gradient anywhere */
+*, *::before, *::after { animation: none !important; box-shadow: none !important; background-image: none !important; text-shadow: none !important; }
+body { background: #fff; color: var(--text); }
+::-webkit-scrollbar-thumb { background: #c9cdd3; border-color: #fff; }
+
+/* shell */
+.topbar { background: #fff; border-bottom: 1px solid var(--border); color: var(--text); }
+.logo, .org { color: var(--text); }
+.logo::before { background: #111; }
+.team, .health, .health .lbl { color: var(--text-2); }
+.health b { color: var(--text); }
+.dot.good { background: var(--green); }
+.dot.bad { background: var(--red); }
+a, .linkbtn { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
+.crumb a { color: var(--text-2); }
+
+/* buttons & inputs */
+.btn { background: #fff; color: var(--text); border-color: #b9bec6; }
+.btn:hover:not(:disabled) { background: #f4f5f7; }
+.btn.primary { background: #111; border-color: #111; color: #fff; }
+.btn.primary:hover:not(:disabled) { background: #333; }
+.btn.amber { background: #fff; border: 1px solid #111; color: #111; }
+.btn.amber:hover:not(:disabled) { background: #f4f5f7; }
+.btn.danger { background: #fff; color: var(--red); border-color: var(--red); }
+input { background: #fff; color: var(--text); border-color: #b9bec6; }
+input:focus { border-color: #111; }
+.alert { background: #fff; color: var(--red); border: 1px solid var(--red); }
+
+/* chips / tags / badges → plain outlined labels */
+.chip, .tag, .pf-badge, .verdict, .gate, .cite, .tcount, .objtype, .live, .hnum, .bullet, .crit-icon, .licon, .pf-num, .pf-rule, .spk, .cmark, .dp-vicon {
+  background: transparent !important; border: 1px solid #b9bec6 !important; color: var(--text) !important;
+}
+.chip, .tag, .pf-badge, .verdict, .gate, .cite, .tcount { font-weight: 600; }
+.tag.ai, .tag.live-tag, .tline .spk { border: 0 !important; padding-left: 0 !important; font-weight: 800; color: #111 !important; }
+.live { color: var(--red) !important; border-color: var(--red) !important; }
+.objtype, .decision, .paper-decision, .tag.disputed { color: var(--red) !important; border-color: var(--red) !important; }
+/* meaning-bearing colours: text only */
+.pf-badge.met, .v-strong, .st-overturned, .es-done, .c-met .crit-icon, .leaf.c-met .licon, .c-met .ricon, .c-met .tr-st, .hstep.done .hnum, .step.done .bullet { color: var(--green) !important; border-color: var(--green) !important; }
+.pf-badge.unmet, .v-weak, .st-upheld, .es-failed, .c-unmet .crit-icon, .leaf.c-unmet .licon, .c-unmet .ricon, .c-unmet .tr-st { color: var(--red) !important; border-color: var(--red) !important; }
+.pf-badge.unk, .pf-badge.na, .pf-badge.todo, .tag.na, .c-unknown .crit-icon, .leaf.c-unknown .licon, .c-unknown .ricon { color: var(--text-2) !important; }
+
+/* panels & headers: no tinted backgrounds */
+.panel, .objhead, .kpi, .kpis, .tabpanel, .drawer, .note, .cnote, .attach, .appeal, .progress-box, .pdetail, .pf-detail, .hl-note, .why-text { background: #fff !important; }
+.panel-head, .tabbar, .lc-head, .cstep, .hstep, .tabbtn, .tabbtn:hover, .tabbtn.on, .prow:hover, .pf-leaf .pf-row:hover, .worklist tbody tr:hover td, .worklist tr.hero td, .worklist tr.hero:hover td, .collapse-head:hover { background: #fff !important; }
+.panel-head h2, .seclabel, .kpi-label, .prop dt { color: var(--text-2); }
+.kpi.accent .kpi-value, .kpi.warn .kpi-value { color: var(--text); }
+.kpis { background: var(--border); }
+.worklist tr.hero td:first-child { box-shadow: none !important; border-left: 2px solid #111; }
+.activity { color: var(--text-2); }
+.sdot, .sdot.live, .sdot.ok, .sdot.ai, .sdot.warn, .sdot.idle, .pulse, .cdot { background: #111 !important; }
+.sdot.idle, .cdot { background: #c3c7cd !important; }
+.sdot.bad { background: var(--red) !important; }
+.sdot.ok { background: var(--green) !important; }
+.pulse::after { display: none; }
+
+/* tabs: black underline for active */
+.tabbtn { color: var(--text-2); }
+.tabbtn.on { color: #111; border-bottom: 2px solid #111; font-weight: 600; }
+.tabbtn.livetab::before { background: var(--red); }
+
+/* steppers */
+.hstep, .cstep { color: var(--muted); }
+.hstep.done, .cstep.done { color: var(--text-2); }
+.hstep.active, .cstep.active { color: #111; font-weight: 700; border-bottom: 2px solid #111; }
+.hstep.waiting { color: #111; font-weight: 700; }
+.hpipe, .callsteps { background: var(--border); }
+.step.active .step-label, .step.waiting .step-note { color: #111; }
+
+/* reasoning trace */
+.rstep::before { background: #fff !important; border-color: #111 !important; }
+.rstep.c-met::before { border-color: var(--green) !important; background: var(--green) !important; }
+.rstep.c-unmet::before { border-color: var(--red) !important; background: var(--red) !important; }
+.k-wait .rtitle { color: #111; }
+.rdetail, .tr-hop { color: var(--text-2); }
+.cite, .cite-inline, .sect, .pf-sec, .tr-hop .k.mono, .dp-pol, .crit-quote b, .smark { color: var(--text-2) !important; }
+.crit-quote, .tr-item, .tr-item.cited { background: #fff !important; border-left-color: #b9bec6; }
+
+/* approval + needs-human: white card, 2px black border, bold heading */
+.panel.hitl, .hitl, .needs-human { background: #fff !important; border: 2px solid #111 !important; }
+.hitl-title, .nh-title { color: #111 !important; font-weight: 800; }
+.nh-title::before { background: #111 !important; color: #fff !important; }
+.nh-q { color: #111; }
+.hitl p { color: var(--text-2); }
+.hitl-lead { color: #111 !important; }
+
+/* outcome */
+.outcome, .panel.outcome { background: #fff !important; border: 1px solid var(--border) !important; border-left: 3px solid var(--green) !important; }
+.oc-label { color: var(--green); }
+.oc-text { color: #111; }
+
+/* live call transcript: plain rows */
+.transcript { background: #fff; }
+.tline { border-left: 0 !important; }
+.tline + .tline { border-top: 1px solid var(--border-soft); }
+.tline .txt { color: #111; }
+.tline.err .txt, .tline.err .spk { color: var(--red) !important; }
+.why-btn { color: var(--text-2); }
+.why-text { color: var(--text-2); border-left: 2px solid #b9bec6; }
+
+/* denial / chart / evidence highlights */
+.reason, .dp-reason { background: #fff !important; color: #111; border-left: 2px solid var(--red); }
+.appeal-rights { background: #fff; }
+.citems li.hl, .cnote.hl { background: #fff !important; color: #111; border-left: 3px solid #111; font-weight: 600; }
+.hl-note { color: #111; }
+
+/* paper documents (already light) */
+.paper { background: #fff; color: #111; border: 1px solid var(--border); }
+.paper-head { border-bottom-color: #111; }
+.paper-from { color: #111; }
+.paper-sub, .paper h4, .paper-meta dt, .sources-title { color: var(--text-2); }
+.cmark:hover, .cmark.on { background: #111 !important; color: #fff !important; border-color: #111 !important; }
+.cpop { background: #fff; color: #111; border: 1px solid #111; }
+.cpop-k { color: #111; }
+.sources li.on { background: #fff; outline: 1px solid #111; }
+
+/* policy decision chart */
+.pf-step, .pf-step.match, .pf-step-head, .pf-step.match .pf-step-head, .pf-peek, .pf-branch, .pf-branch.on, .pf-branch.open, .pf-outcome, .pf-outcome.yes, .pf-outcome.no, .pf-outcome.pending, .seg button, .seg button.on { background: #fff !important; }
+.pf-num, .pf-step.match .pf-num { color: #111 !important; border-color: #111 !important; font-weight: 700; }
+.pf-branch { color: var(--text); border-color: #b9bec6; }
+.pf-branch.on { border-color: #111; color: #111; font-weight: 700; }
+.pf-branch.open { border-color: #111; }
+.pf-outcome.yes { color: var(--green); border-color: var(--green); }
+.pf-outcome.no { color: var(--red); border-color: var(--red); }
+.seg button.on { color: #111; border-bottom: 2px solid #111; font-weight: 600; }
+
+/* dispute card */
+.dispute, .dispute.compact, .dp-side, .dp-side.says, .dp-side.shows, .dp-verdict, .dp-verdict.ok, .dp-verdict.bad { background: #fff !important; }
+.dp-side { border: 1px solid var(--border); }
+.dp-side.says { border-left: 3px solid var(--red); }
+.dp-side.shows.s-met { border-left: 3px solid var(--green); border-color: var(--border); }
+.dp-side.shows.s-unmet { border-left: 3px solid var(--red); }
+.says .dp-k { color: var(--red); }
+.s-met .dp-k { color: var(--green); }
+.dp-verdict { border: 1px solid #111 !important; }
+.ok .dp-vline { color: var(--green); }
+.bad .dp-vline { color: var(--red); }
+.ok .dp-vicon { color: var(--green) !important; border-color: var(--green) !important; }
+.bad .dp-vicon { color: var(--red) !important; border-color: var(--red) !important; }
+.tag.dp-verify { color: #111 !important; }
+
+.spinner { border-color: #d9dce1; border-top-color: #111; animation: spin 0.8s linear infinite !important; }
+
+/* compact supervisor verdict in the approval card */
+.hitl-verdict { border-top: 1px solid #d9dce1; border-bottom: 1px solid #d9dce1; padding: 10px 0; margin: 8px 0 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #111; }
+.hitl-k { display: inline-block; min-width: 92px; font: 600 10px/1.6 var(--mono); letter-spacing: 0.08em; color: #555; }
+.hitl-met { color: #1a7f37; }
+.hitl-vline { font-weight: 600; }
+.hitl-vline .muted { font-weight: 400; }
+
+/* ===== Gray structure: black top bar, gray canvas, gray headers, white content ===== */
+:root { --canvas: #f2f3f5; --shade: #f7f8f9; --shade-2: #eceef1; --ink: #111111; }
+body, .app, .main { background: var(--canvas); }
+
+/* top bar in black */
+.topbar { background: var(--ink); border-bottom: 1px solid var(--ink); }
+.topbar .logo, .topbar .org { color: #fff; }
+.topbar .logo::before { background: #fff; }
+.topbar .team, .topbar .sep, .topbar .dash, .topbar .health, .topbar .health .lbl { color: #a9aeb5; }
+.topbar .health b, .topbar .health span { color: #e6e8eb; }
+.topbar .navlink { color: #a9aeb5; text-decoration: none; }
+.topbar .navlink:hover { color: #fff; background: #23272c; }
+.topbar .navlink.on { color: #fff; box-shadow: inset 0 -2px 0 #fff !important; }
+
+/* panels stay white on the gray canvas; their headers get a light gray band */
+.panel { background: #fff; }
+.panel-head { background: var(--shade); border-bottom: 1px solid var(--border); }
+.worklist thead th, table thead th { background: var(--shade); color: #555; }
+.worklist tbody tr:hover td { background: var(--shade); }
+
+/* case header + pipeline */
+.objhead { background: #fff; }
+.hpipe { background: var(--shade); }
+
+/* tabs: gray strip, active tab white with a black top rule */
+.tabbar { background: var(--shade-2); border-bottom: 1px solid var(--border); }
+.tabbtn { color: #555; text-decoration: none; }
+.tabbtn.on { background: #fff; color: var(--ink); box-shadow: inset 0 2px 0 var(--ink) !important; border-bottom-color: #fff; }
+.tabbody { background: var(--canvas); }
+
+/* documents read as paper on the gray canvas */
+.doc-wrap { background: transparent; }
+
+/* approval / needs-human: black title band */
+.panel.hitl { border: 1px solid var(--ink); background: #fff; padding-top: 0; }
+.panel.hitl .hitl-title { background: var(--ink); color: #fff; margin: 0 -14px 10px; padding: 8px 14px; }
+
+/* reasoning trace on a faint gray */
+.panel.reasoning { background: var(--shade); }
+.panel.reasoning .panel-head { background: var(--shade-2); }
+
+/* dispute card: gray header and "Aetna says" side; chart side stays white */
+.dispute { background: #fff; }
+.dispute .dp-src, .dispute .dp-reason { background: var(--shade); }
+.dp-side:not(.shows) { background: var(--shade); }
+
+/* transcript: agent rows lightly shaded */
+.tline.agent { background: var(--shade); }
+.tline + .tline { border-top: 1px solid var(--border-soft); }
+
+/* policy decision chart: gray step headers */
+.pf-step-head { background: var(--shade); }
+.pf-step.match .pf-step-head { background: var(--shade-2); }
+.pf-arrow span { background: var(--canvas); }
+
+/* shading, enforced over earlier sheets */
+:root { --canvas: #e9ebee; --shade: #f3f4f6; --shade-2: #e4e6ea; }
+body, .app, .main, .tabbody { background: var(--canvas) !important; }
+.hpipe, .hpipe > *, .hpipe li { background: var(--shade) !important; }
+.tabbar { background: var(--shade-2) !important; }
+.tabbtn { background: transparent !important; }
+.tabbtn.on { background: #fff !important; }
+.tabpanel.panel { background: var(--canvas) !important; border-color: var(--border); }
+.panel.reasoning, .panel.reasoning .rtrace { background: var(--shade) !important; }
+.panel.reasoning .panel-head { background: var(--shade-2) !important; }
+.panel-head { background: var(--shade) !important; }
+.objhead { background: #fff !important; }
+
+/* header: brand left, nav centered */
+.topbar { display: grid !important; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.topbar .brand { justify-self: start; }
+.topbar .topnav { margin: 0 !important; justify-self: center; }
+.topbar-spacer { justify-self: end; }

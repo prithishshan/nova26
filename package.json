@@ -1,0 +1,15 @@
+{
+  "name": "nova26",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "server": "npm run dev -w @nova26/server",
+    "app": "npm run start -w @nova26/mobile",
+    "app:web": "npm run web -w @nova26/mobile",
+    "tunnel": "cloudflared tunnel --url http://localhost:8787",
+    "web": "npm run dev -w @nova26/web"
+  }
+}

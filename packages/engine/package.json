@@ -1,0 +1,12 @@
+{
+  "name": "@nova26/engine",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "openai": "^4.77.0",
+    "@nova26/shared": "*"
+  }
+}

@@ -1,0 +1,25 @@
+/* Outcomes tab (black-on-white) */
+.outcomes .oc-summary { font-size: 18px; font-weight: 600; color: #111; padding: 4px 0 14px; border-bottom: 1px solid #d9dce1; margin-bottom: 14px; line-height: 1.45; }
+.oc-sec { margin-bottom: 18px; }
+.oc-items { list-style: none; margin: 0; padding: 0; border-top: 1px solid #e6e8eb; }
+.oc-item { display: grid; grid-template-columns: 22px minmax(160px, 1fr) minmax(0, 1.6fr) 110px; gap: 10px; align-items: baseline; padding: 9px 4px; border-bottom: 1px solid #e6e8eb; font-size: 14px; }
+.oc-mark { font-weight: 800; color: #777; }
+.oc-label { font-weight: 600; color: #111; }
+.oc-value { color: #333; }
+.oc-status { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #777; text-align: right; }
+.oc-item.st-secured .oc-mark, .oc-item.st-secured .oc-status { color: #1a7f37; }
+.oc-item.st-not_obtained .oc-mark, .oc-item.st-not_obtained .oc-status { color: #c62828; }
+.oc-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border: 1px solid #d9dce1; }
+.oc-fact { padding: 10px 12px; border-right: 1px solid #e6e8eb; border-bottom: 1px solid #e6e8eb; min-width: 0; }
+.oc-fact:nth-child(3n) { border-right: 0; }
+.oc-fact:nth-last-child(-n+3) { border-bottom: 0; }
+.oc-fact dt { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #777; }
+.oc-fact dd { margin: 3px 0 0; font-size: 14px; color: #111; overflow-wrap: anywhere; }
+.oc-actions { width: 100%; border-collapse: collapse; font-size: 14px; }
+.oc-actions th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #777; padding: 6px 8px; border-bottom: 1px solid #d9dce1; }
+.oc-actions td { padding: 9px 8px; border-bottom: 1px solid #e6e8eb; color: #111; vertical-align: top; }
+.oc-actions tr.done td { color: #777; text-decoration: line-through; }
+.oc-actions tr.done td:last-child { text-decoration: none; }
+.oc-owner { font-weight: 700; white-space: nowrap; }
+.oc-actions input[type="checkbox"] { flex: none; width: 16px; height: 16px; accent-color: #111; }
+.oc-note { margin-top: 18px; padding-top: 10px; border-top: 1px solid #e6e8eb; }
